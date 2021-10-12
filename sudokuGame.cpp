@@ -45,21 +45,21 @@ bool UsedInCol(int grid[N][N], int pcol, int number) {
     return false;
 }
 //Check if the entry used already in the grid box
-bool UsedInBox(int grid[N][N], int boxBeginRow, int boxBeginCol, int number)
+bool UsedInBox(int grid[N][N], int box, int number)
 {
-    bool tf = false;
-    for (int row = 0; row < 3; row++)
-        for (int col = 0; col < 3; col++)
-            if (grid[row + boxBeginRow][col + boxBeginCol] == number)
-                tf = true;
-    return tf;
+    int boxCol = box % 3 * 3;
+    int boxRow = box / 3 * 3;
+    for (int sq = 0; sq < 9; ++sq)
+        if (grid[boxRow + sq / 3][boxCol + sq % 3] == number)
+            return true;
+    return false;
 }
 /* Checks if num can be assigned to a given prow,pcol location. */
 bool isGridSafe(int grid[N][N], int prow, int pcol, int number) {
     if (grid[prow][pcol] == empty)
         return false;
     return !UsedInRow(grid, prow, number) && !UsedInCol(grid, pcol, number) &&
-        !UsedInBox(grid, prow - prow % 3, pcol - pcol % 3, number);
+        !UsedInBox(grid, pcol / 3 + prow / 3 * 3, number);
 }
 /* print result  */
 void printResult(int finalgrid[N][N]) {
