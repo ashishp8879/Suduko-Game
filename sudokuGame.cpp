@@ -7,9 +7,9 @@ const int empty = 0;
 const int N = 9;
 
 bool isGridSafe(int grid[N][N], int row, int col, int num);
-/* assign values to all the zero (not assigned) values for Sudoku solution
- */
-bool SolveSudoku(int grid[N][N], int r, int c) {
+/* assign values to all the zero (not assigned) values for Sudoku solution */
+bool SolveSudoku(int grid[N][N], int r, int c)
+{
     int row, col;
     for (int row = r; row < N; ++row) {
         for(int col = c, c = 0; col < N; ++col) {
@@ -19,8 +19,9 @@ bool SolveSudoku(int grid[N][N], int r, int c) {
             for (int num = 1; num <= N; num++) {
                 if (isGridSafe(grid, row, col, num)) {
                     grid[row][col] = num;
-                    if (SolveSudoku(grid, r, c+1))
+                    if (SolveSudoku(grid, r, c+1)) {
                         return true;
+                    }
                     grid[row][col] = empty;
                 }
             }
@@ -31,7 +32,8 @@ bool SolveSudoku(int grid[N][N], int r, int c) {
 }
 
 /* Checks if num can be assigned to a given prow,pcol location. */
-bool isGridSafe(int grid[N][N], int prow, int pcol, int number) {
+bool isGridSafe(int grid[N][N], int prow, int pcol, int number)
+{
     int boxRow = prow / 3 * 3;
     int boxCol = pcol / 3 * 3;
     for (int loop = 0; loop < N; loop++) {
@@ -51,16 +53,21 @@ bool isGridSafe(int grid[N][N], int prow, int pcol, int number) {
     }
     return true;
 }
+
 /* print result  */
-void printResult(int finalgrid[N][N]) {
+void printResult(int finalgrid[N][N])
+{
     for (int row = 0; row < N; row++) {
-        for (int col = 0; col < N; col++)
+        for (int col = 0; col < N; col++) {
             std::cout << finalgrid[row][col] << "  ";
+        }
         std::cout << "\n";
     }
 }
+
 /* Main */
-int main() {
+int main()
+{
     int grid[N][N] = {
         { 0, 0, 0, /**/ 0, 0, 0, /**/ 0, 0, 0 }, // 123456789
         { 0, 0, 0, /**/ 0, 0, 3, /**/ 0, 8, 5 }, // 12 4 67 9
@@ -83,9 +90,10 @@ int main() {
        // 8  8  8       8  8  8       8     8
        // 9     9       9  9  9       9  9  9
     };
-    if (SolveSudoku(grid, 0, 0) == true)
+    if (SolveSudoku(grid, 0, 0) == true) {
         printResult(grid);
-    else
+    } else {
         std::cout << "No solution found" << "\n";
+    }
     return 0;
 }
