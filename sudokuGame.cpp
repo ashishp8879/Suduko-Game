@@ -1,25 +1,22 @@
 #include <iostream>
-
 #include <cstdio>
-
 #include <cstring>
-
 #include <cstdlib>
 
-using namespace std;
-#define empty 0
-#define N 9
+const int empty = 0;
+const int N = 9;
+
 bool isGridSafe(int grid[N][N], int row, int col, int num);
 /* assign values to all the zero (not assigned) values for Sudoku solution
  */
 bool SolveSudoku(int grid[N][N], int r, int c) {
     int row, col;
-    for (int row = r; row < 9; ++row) {
-        for(int col = c, c = 0; col < 9; ++col) {
+    for (int row = r; row < N; ++row) {
+        for(int col = c, c = 0; col < N; ++col) {
             if (grid[row][col] != empty) {
                 continue;
             }
-            for (int num = 1; num <= 9; num++) {
+            for (int num = 1; num <= N; num++) {
                 if (isGridSafe(grid, row, col, num)) {
                     grid[row][col] = num;
                     if (SolveSudoku(grid, r, c+1))
@@ -52,7 +49,7 @@ bool UsedInBox(int grid[N][N], int box, int number)
 {
     int boxCol = box % 3 * 3;
     int boxRow = box / 3 * 3;
-    for (int sq = 0; sq < 9; ++sq)
+    for (int sq = 0; sq < N; ++sq)
         if (grid[boxRow + sq / 3][boxCol + sq % 3] == number)
             return true;
     return false;
@@ -66,8 +63,8 @@ bool isGridSafe(int grid[N][N], int prow, int pcol, int number) {
 void printResult(int finalgrid[N][N]) {
     for (int row = 0; row < N; row++) {
         for (int col = 0; col < N; col++)
-            cout << finalgrid[row][col] << "  ";
-        cout << endl;
+            std::cout << finalgrid[row][col] << "  ";
+        std::cout << "\n";
     }
 }
 /* Main */
@@ -97,6 +94,6 @@ int main() {
     if (SolveSudoku(grid, 0, 0) == true)
         printResult(grid);
     else
-        cout << "No solution found" << endl;
+        std::cout << "No solution found" << "\n";
     return 0;
 }
