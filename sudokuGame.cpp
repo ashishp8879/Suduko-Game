@@ -31,18 +31,17 @@ int grid[N][N] = {
 
 bool isGridSafe(int row, int col, int num);
 /* assign values to all the zero (not assigned) values for Sudoku solution */
-bool SolveSudoku(int r, int c)
+bool SolveSudoku(int rInit, int cInit)
 {
-    int row, col;
-    for (int row = r; row < N; ++row) {
-        for(int col = c, c = 0; col < N; ++col) {
+    for (int row = rInit; row < N; ++row) {
+        for(int col = cInit; cInit = 0, col < N; ++col) {
             if (grid[row][col] != empty) {
                 continue;
             }
             for (int num = 1; num <= N; num++) {
                 if (isGridSafe(row, col, num)) {
                     grid[row][col] = num;
-                    if (SolveSudoku(r, c+1)) {
+                    if (SolveSudoku(row, col+1)) {
                         return true;
                     }
                     grid[row][col] = empty;
@@ -51,7 +50,7 @@ bool SolveSudoku(int r, int c)
             return false;
         }
     }
-    return false;
+    return true;
 }
 
 /* Checks if num can be assigned to a given prow,pcol location. */
