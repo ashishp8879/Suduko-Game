@@ -29,35 +29,27 @@ bool SolveSudoku(int grid[N][N], int r, int c) {
     }
     return false;
 }
-/* Returns whether the assigned entry n in the particular row matches
-   the given number num. */
-bool UsedInRow(int grid[N][N], int prow, int number) {
-    for (int col = 0; col < N; col++)
-        if (grid[prow][col] == number)
-            return true;
-    return false;
-}
-/* Returns true if the number num matches any number in the column */
-bool UsedInCol(int grid[N][N], int pcol, int number) {
-    for (int row = 0; row < N; row++)
-        if (grid[row][pcol] == number)
-            return true;
-    return false;
-}
-//Check if the entry used already in the grid box
-bool UsedInBox(int grid[N][N], int box, int number)
-{
-    int boxCol = box % 3 * 3;
-    int boxRow = box / 3 * 3;
-    for (int sq = 0; sq < N; ++sq)
-        if (grid[boxRow + sq / 3][boxCol + sq % 3] == number)
-            return true;
-    return false;
-}
+
 /* Checks if num can be assigned to a given prow,pcol location. */
 bool isGridSafe(int grid[N][N], int prow, int pcol, int number) {
-    return !UsedInRow(grid, prow, number) && !UsedInCol(grid, pcol, number) &&
-        !UsedInBox(grid, pcol / 3 + prow / 3 * 3, number);
+    int boxRow = prow / 3 * 3;
+    int boxCol = pcol / 3 * 3;
+    for (int loop = 0; loop < N; loop++) {
+
+        // Check this row
+        if (grid[prow][loop] == number) {
+            return false;
+        }
+        // Check this col
+        if (grid[loop][pcol] == number) {
+            return false;
+        }
+        // Check this box
+        if (grid[boxRow + loop / 3][boxCol + loop % 3] == number) {
+            return false;
+        }
+    }
+    return true;
 }
 /* print result  */
 void printResult(int finalgrid[N][N]) {
