@@ -6,9 +6,32 @@
 const int empty = 0;
 const int N = 9;
 
-bool isGridSafe(int grid[N][N], int row, int col, int num);
+int grid[N][N] = {
+        { 0, 0, 0, /**/ 0, 0, 0, /**/ 0, 0, 0 }, // 123456789
+        { 0, 0, 0, /**/ 0, 0, 3, /**/ 0, 8, 5 }, // 12 4 67 9
+        { 0, 0, 1, /**/ 0, 2, 0, /**/ 0, 0, 0 }, //   3456789
+       /*-------------------------------------*/
+        { 0, 0, 0, /**/ 5, 0, 7, /**/ 0, 0, 0 }, // 1234 6 89
+        { 0, 0, 4, /**/ 0, 0, 0, /**/ 1, 0, 0 }, //  23 56789
+        { 0, 9, 0, /**/ 0, 0, 0, /**/ 0, 0, 0 }, // 12345678
+       /*-------------------------------------*/
+        { 5, 0, 0, /**/ 0, 0, 0, /**/ 0, 7, 3 }, // 12 4 6 89
+        { 0, 0, 2, /**/ 0, 1, 0, /**/ 0, 0, 0 }, //   3456789
+        { 0, 0, 0, /**/ 0, 4, 0, /**/ 0, 0, 9 }  // 123 5678
+       // 1  1          1     1          1  1
+       // 2  2          2     2       2  2  2
+       // 3  3  3       3  3          3  3
+       // 4  4          4  4  4       4  4  4
+       //    5  5          5  5       5  5
+       // 6  6  6       6  6  6       6  6  6
+       // 7  7  7       7  7          7     7
+       // 8  8  8       8  8  8       8     8
+       // 9     9       9  9  9       9  9  9
+    };
+
+bool isGridSafe(int row, int col, int num);
 /* assign values to all the zero (not assigned) values for Sudoku solution */
-bool SolveSudoku(int grid[N][N], int r, int c)
+bool SolveSudoku(int r, int c)
 {
     int row, col;
     for (int row = r; row < N; ++row) {
@@ -17,9 +40,9 @@ bool SolveSudoku(int grid[N][N], int r, int c)
                 continue;
             }
             for (int num = 1; num <= N; num++) {
-                if (isGridSafe(grid, row, col, num)) {
+                if (isGridSafe(row, col, num)) {
                     grid[row][col] = num;
-                    if (SolveSudoku(grid, r, c+1)) {
+                    if (SolveSudoku(r, c+1)) {
                         return true;
                     }
                     grid[row][col] = empty;
@@ -32,7 +55,7 @@ bool SolveSudoku(int grid[N][N], int r, int c)
 }
 
 /* Checks if num can be assigned to a given prow,pcol location. */
-bool isGridSafe(int grid[N][N], int prow, int pcol, int number)
+bool isGridSafe(int prow, int pcol, int number)
 {
     int boxRow = prow / 3 * 3;
     int boxCol = pcol / 3 * 3;
@@ -55,11 +78,11 @@ bool isGridSafe(int grid[N][N], int prow, int pcol, int number)
 }
 
 /* print result  */
-void printResult(int finalgrid[N][N])
+void printResult()
 {
     for (int row = 0; row < N; row++) {
         for (int col = 0; col < N; col++) {
-            std::cout << finalgrid[row][col] << "  ";
+            std::cout << grid[row][col] << "  ";
         }
         std::cout << "\n";
     }
@@ -68,30 +91,8 @@ void printResult(int finalgrid[N][N])
 /* Main */
 int main()
 {
-    int grid[N][N] = {
-        { 0, 0, 0, /**/ 0, 0, 0, /**/ 0, 0, 0 }, // 123456789
-        { 0, 0, 0, /**/ 0, 0, 3, /**/ 0, 8, 5 }, // 12 4 67 9
-        { 0, 0, 1, /**/ 0, 2, 0, /**/ 0, 0, 0 }, //   3456789
-       /*-------------------------------------*/
-        { 0, 0, 0, /**/ 5, 0, 7, /**/ 0, 0, 0 }, // 1234 6 89
-        { 0, 0, 4, /**/ 0, 0, 0, /**/ 1, 0, 0 }, //  23 56789
-        { 0, 9, 0, /**/ 0, 0, 0, /**/ 0, 0, 0 }, // 12345678
-       /*-------------------------------------*/
-        { 5, 0, 0, /**/ 0, 0, 0, /**/ 0, 7, 3 }, // 12 4 6 89
-        { 0, 0, 2, /**/ 0, 1, 0, /**/ 0, 0, 0 }, //   3456789
-        { 0, 0, 0, /**/ 0, 4, 0, /**/ 0, 0, 9 }  // 123 5678
-       // 1  1          1     1          1  1
-       // 2  2          2     2       2  2  2
-       // 3  3  3       3  3          3  3
-       // 4  4          4  4  4       4  4  4
-       //    5  5          5  5       5  5
-       // 6  6  6       6  6  6       6  6  6
-       // 7  7  7       7  7          7     7
-       // 8  8  8       8  8  8       8     8
-       // 9     9       9  9  9       9  9  9
-    };
-    if (SolveSudoku(grid, 0, 0) == true) {
-        printResult(grid);
+    if (SolveSudoku(0, 0) == true) {
+        printResult();
     } else {
         std::cout << "No solution found" << "\n";
     }
