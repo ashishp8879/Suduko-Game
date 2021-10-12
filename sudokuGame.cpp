@@ -48,8 +48,8 @@ bool UsedInCol(int grid[N][N], int pcol, int number) {
     for (int row = 0; row < N; row++)
       if (grid[row][pcol] == number)
         return true;
-      else
-        return false;
+    return false;
+}
     //Check if the entry used already in the grid box
     bool UsedInBox(int grid[N][N], int boxBeginRow, int boxBeginCol, int number)
 
