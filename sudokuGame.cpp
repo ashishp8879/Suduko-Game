@@ -15,9 +15,11 @@ bool isGridSafe(int grid[N][N], int row, int col, int num);
 bool SolveSudoku(int grid[N][N], int r, int c) {
     int row, col;
     for (int row = r; row < 9; ++row) {
-        for(int col = c; col < 9; ++col) {
+        for(int col = c, c = 0; col < 9; ++col) {
+            if (grid[row][col] != empty) {
+                continue;
+            }
             for (int num = 1; num <= 9; num++) {
-                std::cout << "R: " << row << " C:  " << col << "  N: " << num << "\n";
                 if (isGridSafe(grid, row, col, num)) {
                     grid[row][col] = num;
                     if (SolveSudoku(grid, r, c+1))
@@ -25,6 +27,7 @@ bool SolveSudoku(int grid[N][N], int r, int c) {
                     grid[row][col] = empty;
                 }
             }
+            return false;
         }
     }
     return false;
@@ -56,8 +59,6 @@ bool UsedInBox(int grid[N][N], int box, int number)
 }
 /* Checks if num can be assigned to a given prow,pcol location. */
 bool isGridSafe(int grid[N][N], int prow, int pcol, int number) {
-    if (grid[prow][pcol] == empty)
-        return false;
     return !UsedInRow(grid, prow, number) && !UsedInCol(grid, pcol, number) &&
         !UsedInBox(grid, pcol / 3 + prow / 3 * 3, number);
 }
