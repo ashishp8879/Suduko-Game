@@ -10,29 +10,23 @@ using namespace std;
 #define empty 0
 #define N 9
 bool isGridSafe(int grid[N][N], int row, int col, int num);
-bool isEmptyLocation(int grid[N][N], int & row, int & col);
 /* assign values to all the zero (not assigned) values for Sudoku solution
  */
-bool SolveSudoku(int grid[N][N]) {
+bool SolveSudoku(int grid[N][N], int r, int c) {
     int row, col;
-    if (!isEmptyLocation(grid, row, col))
-        return true;
-    for (int num = 1; num <= 9; num++) {
-        if (isGridSafe(grid, row, col, num)) {
-            grid[row][col] = num;
-            if (SolveSudoku(grid))
-                return true;
-            grid[row][col] = empty;
+    for (int row = r; row < 9; ++row) {
+        for(int col = c; col < 9; ++col) {
+            for (int num = 1; num <= 9; num++) {
+                std::cout << "R: " << row << " C:  " << col << "  N: " << num << "\n";
+                if (isGridSafe(grid, row, col, num)) {
+                    grid[row][col] = num;
+                    if (SolveSudoku(grid, r, c+1))
+                        return true;
+                    grid[row][col] = empty;
+                }
+            }
         }
     }
-    return false;
-}
-/* Check for entries that don't have a value. */
-bool isEmptyLocation(int grid[N][N], int & row, int & col) {
-    for (row = 0; row < N; row++)
-        for (col = 0; col < N; col++)
-            if (grid[row][col] == empty)
-                return true;
     return false;
 }
 /* Returns whether the assigned entry n in the particular row matches
@@ -52,7 +46,6 @@ bool UsedInCol(int grid[N][N], int pcol, int number) {
 }
 //Check if the entry used already in the grid box
 bool UsedInBox(int grid[N][N], int boxBeginRow, int boxBeginCol, int number)
-
 {
     bool tf = false;
     for (int row = 0; row < 3; row++)
@@ -63,6 +56,8 @@ bool UsedInBox(int grid[N][N], int boxBeginRow, int boxBeginCol, int number)
 }
 /* Checks if num can be assigned to a given prow,pcol location. */
 bool isGridSafe(int grid[N][N], int prow, int pcol, int number) {
+    if (grid[prow][pcol] == empty)
+        return false;
     return !UsedInRow(grid, prow, number) && !UsedInCol(grid, pcol, number) &&
         !UsedInBox(grid, prow - prow % 3, pcol - pcol % 3, number);
 }
@@ -177,7 +172,7 @@ int main() {
             9
         }
     };
-    if (SolveSudoku(grid) == true)
+    if (SolveSudoku(grid, 0, 0) == true)
         printResult(grid);
     else
         cout << "No solution found" << endl;
